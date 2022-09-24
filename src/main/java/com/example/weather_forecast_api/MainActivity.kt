@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.weather_forecast_api.databinding.ActivityMainBinding
 import org.json.JSONObject
+import kotlin.math.log
 
 
 const val API_KEY = "0d024130c2a641d1b36183258221709"
@@ -46,14 +47,9 @@ class MainActivity : AppCompatActivity() {
 
             url,
 
-            { response->
-                //get information from json
-                //"current" one of the objects that we take
-                //and put it in "temp" for later use
-                val obj = JSONObject(response)
-                val temp = obj.getJSONObject("current")
+            { result -> parseWeatherData(result)
 
-                Log.d("MyLog", "Response: $userInput : $response")
+//                Log.d("MyLog", "Response: $userInput : $response")
             },
 
             {
@@ -61,9 +57,25 @@ class MainActivity : AppCompatActivity() {
             }
 
         )
-
         qoeue.add(stingRequest)
 
     }
+
+    private fun parseWeatherData(result: String){
+        val mainObject = JSONObject(result)
+        val item = WeatherModel(
+            mainObject.getJSONObject("location").getString("name"),
+            mainObject.getJSONObject("location").getString("country"),
+            mainObject.getJSONObject("location").getString("localtime"),
+            mainObject.getJSONObject("current").getString("temp_c"),
+            mainObject.getJSONObject("current").getString("temp_f")
+        )
+        Log.d("MyLog", "City: ${item.name}")
+        Log.d("MyLog", "City: ${item.country}")
+        Log.d("MyLog", "City: ${item.localtime}")
+        Log.d("MyLog", "City: ${item.temp_c}")
+        Log.d("MyLog", "City: ${item.temp_f}")
+    }
+
 }
 
