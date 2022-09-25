@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         val input_text = findViewById<EditText>(R.id.input_text)
         val bStart = findViewById<Button>(R.id.bStart)
 
+
         bStart.setOnClickListener{
 
             val userInput = input_text.text.toString()
@@ -62,6 +63,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun parseWeatherData(result: String){
+
+        data class WeatherModel(
+            val name: String,
+            val country: String,
+            val localtime: String,
+            val temp_c: String,
+            val temp_f: String
+        )
+
         val mainObject = JSONObject(result)
         val item = WeatherModel(
             mainObject.getJSONObject("location").getString("name"),
@@ -70,12 +80,25 @@ class MainActivity : AppCompatActivity() {
             mainObject.getJSONObject("current").getString("temp_c"),
             mainObject.getJSONObject("current").getString("temp_f")
         )
-        Log.d("MyLog", "City: ${item.name}")
-        Log.d("MyLog", "City: ${item.country}")
-        Log.d("MyLog", "City: ${item.localtime}")
-        Log.d("MyLog", "City: ${item.temp_c}")
-        Log.d("MyLog", "City: ${item.temp_f}")
+        Log.d("MyLog", "name: ${item.name}")
+        Log.d("MyLog", "country: ${item.country}")
+        Log.d("MyLog", "localtime: ${item.localtime}")
+        Log.d("MyLog", "temp_c: ${item.temp_c}")
+        Log.d("MyLog", "temp_f: ${item.temp_f}")
+
+        val textView1 = findViewById<TextView>(R.id.textView1)
+        val textView2 = findViewById<TextView>(R.id.textView2)
+        val textView3 = findViewById<TextView>(R.id.textView3)
+        val textView4 = findViewById<TextView>(R.id.textView4)
+        val textView5 = findViewById<TextView>(R.id.textView5)
+
+        textView1.text = "target: " + item.name
+        textView2.text = "country: " + item.country
+        textView3.text = "localtime: " + item.localtime
+        textView4.text = "temp_c: " + item.temp_c
+        textView5.text = "temp_f: " + item.temp_f
     }
+
 
 }
 
